@@ -22,7 +22,6 @@ public class ExpressionTree extends ATree {
         		infix.add(token);
         	}
         }
-        
         return infix;
     }
     
@@ -54,9 +53,7 @@ public class ExpressionTree extends ATree {
         	while (!operators.isEmpty()) {
         		postfix.add(operators.pop());
         	}
-        	
         	return postfix;
-        
     }
     
     @Override
