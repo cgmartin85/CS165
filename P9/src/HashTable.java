@@ -27,11 +27,23 @@ public class HashTable implements IHash {
      * @param hasher the type of hashing function
      */
     public HashTable(int size, HashFunction hasher) {
-        // YOUR CODE HERE
+        this.hasher = hasher;
+        hashTable = new ArrayList<List<String>>();
+        numberOfElements = 0;
+        this.size = size;
+        
+        for (int i = 0; i < size(); i++) {
+        	hashTable.add(new LinkedList<String>());
+        }
     }
 
     public boolean insert(String key) {
-        // YOUR CODE HERE
+        int hash = hasher.hash(key) % size();
+        if (!hashTable.get(hash).contains(key)) {
+        	hashTable.get(hash).add(key);
+        	numberOfElements++;
+        	return true;
+        }
         return false;
     }
 
@@ -46,8 +58,7 @@ public class HashTable implements IHash {
     }
 
     public int size() {
-        // YOUR CODE HERE
-        return 0;
+        return size;
     }
 
     public int size(int index) {
