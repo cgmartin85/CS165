@@ -46,6 +46,7 @@ public class Hasher {
             	return key.hashCode();
             };
 
+
         default:
             usage();
         }
