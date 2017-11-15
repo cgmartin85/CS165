@@ -62,8 +62,17 @@ public class SymbolTable {
      * @see Character#isJavaIdentifierPart(char) 
      */
     static boolean isValidJavaIdentifier(String k){
-        //YOUR CODE HERE
-        return true;
+        if (!keywords.contains(k)) {
+        	if (Character.isJavaIdentifierStart(k.charAt(0))) {
+        		for (int i = 0; i < k.length(); i++) {
+        			if (!Character.isJavaIdentifierPart(k.charAt(i))) {
+        				return false;
+        			}
+        			return true;
+        		}
+        	}
+        }
+        return false;
     }
 
     /**
@@ -88,7 +97,55 @@ public class SymbolTable {
      *                          use the following message: {@code String.format("\"%s\" is not a valid Java identifier", k)}
      */
     public void put(String k, Integer v){
-        // YOUR CODE HERE
+        if (isValidJavaIdentifier(k)) {
+        	if(root == null) {
+        		root = new Symbol(k, v);
+        	}
+        	else {
+        		Symbol current = root;
+        		Symbol child = root;
+        		
+        		if (k.equals(current.name)) {
+        			current.value = v;
+        		}
+        		else if (k.compareTo(current.name) > 0) {
+        			child = current.right;
+        			if (child == null) {
+        				current.right = new Symbol(k, v);
+        			}
+        		}
+        		else {
+        			child = current.left;
+        			if (child == null) {
+        				current.left = new Symbol(k, v);
+        			}
+        		}
+        		
+        		while (child != null) {
+        			if (k.equals(current.name)) {
+            			current.value = v;
+            			return;
+            		}
+        			if (k.compareTo(current.name) > 0) {
+        				child = current.right;
+        				if (child == null) {
+        					current.right = new Symbol(k, v);
+        				}
+        				else current = child;
+        			}
+        			else {
+        				child = current.left;
+        				if (child == null) {
+        					current.left = new Symbol(k, v);
+        				}
+        				else current = child;
+        			}
+        		}
+        	}
+        }
+        else {
+        	throw new RuntimeException(String.format("\"%s\" is not a valid Java identifier", k));
+        }
     }
 
 
@@ -105,8 +162,24 @@ public class SymbolTable {
      *                          {@code String.format("\"%s\" does not exist", k)}
      */
     public Integer get(String k){
-        // YOUR CODE HERE
-        return -1;
+    	if (isValidJavaIdentifier(k)) {
+			Symbol current = root;
+			while (current != null) {
+				if (current.name.equals(k)) {
+					return current.value;
+				}
+				else if (k.compareTo(current.name) > 0) {
+					current = current.right;
+				}
+				else {
+					current = current.left;
+				}
+			}
+			throw new RuntimeException(String.format("\"%s\" does not exist", k));
+    	}
+    	else {
+    		throw new RuntimeException(String.format("\"%s\" is not a valid Java identifier", k));
+    	}
     }
 
     public List<Symbol> inorder() {
@@ -131,7 +204,15 @@ public class SymbolTable {
      * @return an ArrayList with Symbols in inorder traversal
      */
     public static List<Symbol> inorderRecursive(Symbol current, List<Symbol> infix) {
-        return null;
+    	if (current != null) {
+    		inorderRecursive(current.left, infix);
+    		infix.add(current);
+    		inorderRecursive(current.right, infix);
+    		return infix;
+    	}
+    	else {
+    		return infix;
+    	}
     }
 
 
@@ -149,6 +230,9 @@ public class SymbolTable {
         st.put("k", 2);
         st.put("y", 21);
         System.out.println(st.inorder());
+        
+        System.out.println(st.get("y"));
+        System.out.println(st.get("c"));
     }
 
 }

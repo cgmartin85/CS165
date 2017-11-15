@@ -70,9 +70,21 @@ public class ExpressionTreeExpanded extends ExpressionTree {
      * @return the result of {@code lhs operator rhs}
      * @throws UnsupportedOperationException if the operator is not valid
      */
-    static int performOperation(String operator, int lhs, int rhs){
-        //YOUR CODE HERE
-        return -1;
+    static int performOperation(String operator, int lhs, int rhs){    	
+    	switch (operator) {
+    	case "*":
+    		return lhs * rhs;
+    	case "/":
+    		return lhs / rhs;
+    	case "+":
+    		return lhs + rhs;
+    	case "-":
+    		return lhs - rhs;
+    	case "%":
+    		return lhs % rhs;
+    	default:
+    		throw new UnsupportedOperationException();
+    	}
     }
 
     /**
@@ -82,8 +94,12 @@ public class ExpressionTreeExpanded extends ExpressionTree {
      * @return the decimal representation of the token
      */
     public int valueOfExpanded(String token) {
-        // YOUR CODE HERE
-        return -1;
+        if (ATree.isInteger(token)) {
+        	return ATree.valueOf(token);
+        }
+        else {
+        	return st.get(token);
+        }
     }
 
     /**
