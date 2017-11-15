@@ -63,6 +63,7 @@ public class HashTable implements IHash {
 
     public int size(int index) {
         // YOUR CODE HERE
+    	
         return 0;
     }
 
