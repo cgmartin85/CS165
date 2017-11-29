@@ -24,6 +24,7 @@ public class ExpressionTreeExpanded extends ExpressionTree {
      * @param infix the inorder expression
      * @return the postfix expression
      */
+    @Override
     public List<String> convert(Queue<String> infix) {
         List<String> postfix = new ArrayList<>();
         Deque<String> operators = new ArrayDeque<>(); // used as a stack
@@ -56,6 +57,7 @@ public class ExpressionTreeExpanded extends ExpressionTree {
      * Evaluate method from above. Utilizes two helper methods
      * @return the result of the expression
      */
+    @Override
     public int evaluateRecursive(Node current) {
         if(current.left == null && current.right == null) return valueOfExpanded(current.token);
         return performOperation(current.token, evaluateRecursive(current.left), evaluateRecursive(current.right));
