@@ -1,0 +1,71 @@
+digraph BST {
+    ratio = 1.0;
+    node [style=filled]
+    node [fillcolor=darkslateblue]
+    node [fixedsize=true]
+    node [shape=oval]
+    node [width=6]
+    node [height=4]
+    node [fontname=Arial]
+    node [fontsize=60]
+    node [fontcolor=white]
+    edge [dir=none]
+    edge [penwidth=24]
+    edge [fontname=Arial]
+    edge [fontsize=110]
+    Node0 [label="Aspen"];
+    Node1 [label="Boulder"];
+    Node2 [label="Breckenridge"];
+    Node3 [label="Craig"];
+    Node4 [label="Denver"];
+    Node5 [label="Durango"];
+    Node6 [label="Fort Collins"];
+    Node7 [label="Pueblo"];
+    Node8 [label="Snowmass"];
+    Node9 [label="Telluride"];
+    Node0 -> Node8 [label="8" color="green"]
+    Node1 -> Node4 [label="28" color="green"]
+    Node1 -> Node6 [label="55" color="green"]
+    Node4 -> Node6 [label="64" color="green"]
+    Node2 -> Node4 [label="81" color="green"]
+    Node1 -> Node2 [label="99" color="green"]
+    Node4 -> Node7 [label="112" color="blue"]
+    Node5 -> Node9 [label="120" color="blue"]
+    Node2 -> Node8 [label="136" color="blue"]
+    Node0 -> Node2 [label="138" color="blue"]
+    Node2 -> Node6 [label="142" color="blue"]
+    Node1 -> Node7 [label="146" color="blue"]
+    Node3 -> Node8 [label="156" color="blue"]
+    Node0 -> Node3 [label="158" color="blue"]
+    Node6 -> Node7 [label="181" color="blue"]
+    Node2 -> Node7 [label="190" color="blue"]
+    Node0 -> Node4 [label="198" color="blue"]
+    Node3 -> Node4 [label="198" color="blue"]
+    Node4 -> Node8 [label="201" color="magenta"]
+    Node0 -> Node1 [label="210" color="magenta"]
+    Node2 -> Node3 [label="213" color="magenta"]
+    Node1 -> Node8 [label="214" color="magenta"]
+    Node1 -> Node3 [label="216" color="magenta"]
+    Node8 -> Node9 [label="246" color="magenta"]
+    Node0 -> Node9 [label="248" color="magenta"]
+    Node6 -> Node8 [label="256" color="magenta"]
+    Node0 -> Node6 [label="259" color="magenta"]
+    Node3 -> Node6 [label="259" color="magenta"]
+    Node3 -> Node9 [label="271" color="magenta"]
+    Node5 -> Node7 [label="272" color="magenta"]
+    Node5 -> Node8 [label="287" color="magenta"]
+    Node0 -> Node5 [label="289" color="magenta"]
+    Node2 -> Node9 [label="303" color="red"]
+    Node0 -> Node7 [label="307" color="red"]
+    Node3 -> Node7 [label="307" color="red"]
+    Node7 -> Node8 [label="307" color="red"]
+    Node3 -> Node5 [label="312" color="red"]
+    Node2 -> Node5 [label="344" color="red"]
+    Node4 -> Node9 [label="368" color="red"]
+    Node1 -> Node9 [label="381" color="red"]
+    Node4 -> Node5 [label="409" color="red"]
+    Node1 -> Node5 [label="422" color="red"]
+    Node6 -> Node9 [label="424" color="red"]
+    Node5 -> Node6 [label="465" color="red"]
+    Node7 -> Node9 [label="474" color="red"]
+}

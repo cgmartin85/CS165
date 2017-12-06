@@ -43,7 +43,7 @@ public class GraphImplementation extends GraphAbstract {
         impl.breadthFirst("Aspen");
         System.out.println();
 
-        /*
+        
         // EXTRA CREDIT: Print all shortest paths
         for (int from = 0; from < cities.size(); from++) {
             for (int to = 0; to < cities.size(); to++)
@@ -54,12 +54,13 @@ public class GraphImplementation extends GraphAbstract {
                     impl.shortestPath(fromCity, toCity);
                 }
         }
-        */
+        
     }
 
     // Reads mileage chart from CSV file
     public void readGraph(String filename) {
     	ArrayList<String> data = readFile(filename);
+    	
     	String[] cityNames = data.get(0).split(",");
     	for(String city: cityNames) {
     		if (!city.isEmpty()) {
@@ -67,30 +68,20 @@ public class GraphImplementation extends GraphAbstract {
     		}
     	}
     	
-		for (int i = 0; i < cities.size(); i++) {
-			String [] edges = data.get(i+1).split(",");
-			
-			// TODO sort edges
-			
-			for (int j = 1; j < edges.length; j++) {
-				if (!edges[j].isEmpty()) {
-					cities.get(i).edges.add(new GraphEdge(i, j-1, Integer.parseInt(edges[j])));					
-				}
-			}
-		}
-		
-		
-		
-		
-		for (int i = 0; i < cities.size(); i++) {
-			for (int j = 0; j < cities.get(i).edges.size(); j++) {
-				System.out.print(cities.get(i).edges.get(j).fromIndex + ", " + cities.get(i).edges.get(j).toIndex + ", "+ cities.get(i).edges.get(j).mileage + "; ");
-			}
-			System.out.println();
-		}
-		
+    	int fromIndex = 0;
+    	for (GraphNode city : cities) {
+    		String [] edgeData = data.get(fromIndex + 1).split(",");
+    		for (int toIndex = fromIndex + 1; toIndex < cities.size(); toIndex++) {
+    			mileages.add(new GraphEdge(fromIndex, toIndex, Integer.parseInt(edgeData[toIndex + 1])));
+    			city.edges.add(new GraphEdge(fromIndex, toIndex, Integer.parseInt(edgeData[toIndex + 1])));
+    			cities.get(toIndex).edges.add(new GraphEdge(toIndex, fromIndex, Integer.parseInt(edgeData[toIndex + 1])));
+    		}
+    		city.edges.sort(null);
+    		fromIndex++;
+    	}
+    	
+    	mileages.sort(null);
 
-        // YOUR CODE HERE
     }
 
     public void writeGraph(String filename) {
@@ -112,30 +103,140 @@ public class GraphImplementation extends GraphAbstract {
         output.add("    edge [fontname=Arial]");
         output.add("    edge [fontsize=110]");
         
-        // YOUR CODE HERE
-        // Write distances graph
+        int cityIndex = 0;
+        for (GraphNode city: cities) {   	
+        	output.add("    Node" + cityIndex + " [label=\"" + city.name + "\"];");
+        	cityIndex++;
+        }
+        	
+
+    	for (GraphEdge edge: mileages) {
+    		if (!(edge.fromIndex >= edge.toIndex)) {
+    			String color;
+    			if (edge.mileage < 100) {
+    				color = "green";
+    			}
+    			else if (edge.mileage < 200) {
+    				color = "blue";
+    			}
+    			else if (edge.mileage < 300) {
+    				color = "magenta";
+    			}
+    			else {
+    				color = "red";
+    			}
+    			
+    			output.add("    Node" + edge.fromIndex + " -> Node" + edge.toIndex + " [label=\"" + edge.mileage + "\" color=\"" + color + "\"]");
+    		}
+    	}
+
         output.add("}");
         writeFile(filename, output);
     }
 
-
+    private int getIndex(String city) {
+    	int index;
+    	for (index = 0; index < cities.size(); index++) {
+    		if (cities.get(index).name.equals(city)) {
+        		break;
+        	}
+    	}
+    	
+    	return index;
+    }
 
     public void depthFirst(String startCity) {
-        // YOUR CODE HERE
+    	int index = getIndex(startCity);
+        depthFirst(index, new ArrayList<Integer>(cities.size()));
     }
 
     // Recursive helper method
     public void depthFirst(int index, ArrayList<Integer> visited) {
-        // YOUR CODE HERE
+    	visited.add(index);
+    	System.out.println(cities.get(index).name);
+    	
+        for (GraphEdge edge: cities.get(index).edges) {
+        	boolean visitedCity = false;
+        	for (int i = 0; i < visited.size(); i++) {
+        		if (visited.get(i).equals(edge.toIndex)) {
+        			visitedCity = true;
+        		}
+        	}
+        	if (!visitedCity) {
+        		depthFirst(edge.toIndex, visited);
+        	}
+        }
     }
 
     public void breadthFirst(String startCity) {
-        // YOUR CODE HERE
+        ArrayDeque<Integer> queue = new ArrayDeque<Integer>();
+        ArrayList<Integer> visited = new ArrayList<Integer>(cities.size());
+        int cityIndex = getIndex(startCity);
+        queue.add(cityIndex);
+        visited.add(cityIndex);
+        
+        while (!queue.isEmpty()) {
+        	cityIndex = queue.poll();
+        	System.out.println(cities.get(cityIndex).name);
+        	for (GraphEdge e: cities.get(cityIndex).edges) {
+        		boolean visitedCity = false;
+            	for (int i = 0; i < visited.size(); i++) {
+            		if (visited.get(i).equals(e.toIndex)) {
+            			visitedCity = true;
+            		}
+            	}
+            	if (!visitedCity) {
+            		queue.offer(e.toIndex);
+            		visited.add(e.toIndex);
+            	}
+        	}
+        }
+        
     }
 
 
     public void shortestPath(String fromCity, String toCity) {
-        // YOUR CODE HERE
+    	int from = getIndex(fromCity);
+    	int to = getIndex(toCity);
+    	
+    	
+        ArrayList<Integer> min = new ArrayList<Integer>();
+        ArrayList<Integer> prev = new ArrayList<Integer>();
+        ArrayList<Integer> unv = new ArrayList<Integer>();
+        
+        for (int i = 0; i < cities.size(); i++) {
+        	min.add(Integer.MAX_VALUE);
+        	prev.add(-1);
+        	unv.add(i);
+        }
+        min.set(from, 0);
+        
+        while (!unv.isEmpty()) {
+        	
+        	Integer minSK = Integer.MAX_VALUE;
+        	int unvIndex = -1;
+        	for (int i = 0; i < unv.size(); i++) {
+        		if (min.get(unv.get(i)) < minSK) {
+        			minSK = min.get(unv.get(i));
+        			unvIndex = i;
+        		}
+        	}
+        	unv.remove(unvIndex);
+        	
+        	int indexSK = min.indexOf(minSK);
+	        
+	        // update shortest distances
+	        for (GraphEdge e: cities.get(indexSK).edges) {
+	        	int cost = minSK + e.mileage;
+	        	
+	        	if (cost < min.get(e.toIndex)) {
+	        		min.set(e.toIndex, cost);
+	        		prev.set(e.toIndex, indexSK);
+	        	}
+	        }
+        }
+        
+        System.out.println("Shortest Path: [" + fromCity + ", " + toCity + "] (Mileage " + min.get(to) + ")");
     }
 
     // Helper functions
