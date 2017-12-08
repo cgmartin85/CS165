@@ -45,12 +45,12 @@ public class GraphImplementation extends GraphAbstract {
 
         
         // EXTRA CREDIT: Print all shortest paths
+        System.out.println("Shortest Path: ");
         for (int from = 0; from < cities.size(); from++) {
             for (int to = 0; to < cities.size(); to++)
                 if (from != to) {
                     String fromCity = cities.get(from).name;
                     String toCity = cities.get(to).name;
-                    System.out.print("Shortest Path: ");
                     impl.shortestPath(fromCity, toCity);
                 }
         }
@@ -113,13 +113,13 @@ public class GraphImplementation extends GraphAbstract {
     	for (GraphEdge edge: mileages) {
     		if (!(edge.fromIndex >= edge.toIndex)) {
     			String color;
-    			if (edge.mileage < 100) {
+    			if (edge.mileage <= 100) {
     				color = "green";
     			}
-    			else if (edge.mileage < 200) {
+    			else if (edge.mileage <= 200) {
     				color = "blue";
     			}
-    			else if (edge.mileage < 300) {
+    			else if (edge.mileage <= 300) {
     				color = "magenta";
     			}
     			else {
@@ -153,7 +153,7 @@ public class GraphImplementation extends GraphAbstract {
     // Recursive helper method
     public void depthFirst(int index, ArrayList<Integer> visited) {
     	visited.add(index);
-    	System.out.println(cities.get(index).name);
+    	System.out.println("Visited " + cities.get(index).name);
     	
         for (GraphEdge edge: cities.get(index).edges) {
         	boolean visitedCity = false;
@@ -177,7 +177,7 @@ public class GraphImplementation extends GraphAbstract {
         
         while (!queue.isEmpty()) {
         	cityIndex = queue.poll();
-        	System.out.println(cities.get(cityIndex).name);
+        	System.out.println("Visited " + cities.get(cityIndex).name);
         	for (GraphEdge e: cities.get(cityIndex).edges) {
         		boolean visitedCity = false;
             	for (int i = 0; i < visited.size(); i++) {
@@ -236,7 +236,7 @@ public class GraphImplementation extends GraphAbstract {
 	        }
         }
         
-        System.out.println("Shortest Path: [" + fromCity + ", " + toCity + "] (Mileage " + min.get(to) + ")");
+        System.out.println("[" + fromCity + ", " + toCity + "] (Mileage " + min.get(to) + ")");
     }
 
     // Helper functions
