@@ -7,9 +7,11 @@ public class Shell {
     private SymbolTable st = new SymbolTable();
 
     /**
+     * Calculates the result of the given statement.
+     * The statement can be an assignment (e.g., "x = 3 + 4") or an expression (e.g., "3 + 4").
      *
-     * @param statement
-     * @return
+     * @param statement The statement to calculate.
+     * @return The result of the calculation.
      */
     int calculate(String statement){
         // Instantiate student code
@@ -23,6 +25,12 @@ public class Shell {
         return result;
     }
 
+    /**
+     * Read-Eval-Print Loop (REPL) for the shell.
+     * Reads lines from the scanner, calculates the result, and prints it.
+     *
+     * @param in The Scanner to read input from.
+     */
     static void repl(Scanner in){
         Shell sh = new Shell();
         System.out.print(">> ");
@@ -39,6 +47,11 @@ public class Shell {
         }
     }
 
+    /**
+     * Main method to start the shell.
+     *
+     * @param args Command line arguments (not used).
+     */
     public static void main(String [] args) {
         Scanner in = new Scanner(System.in);
         repl(in);

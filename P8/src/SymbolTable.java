@@ -18,19 +18,34 @@ public class SymbolTable {
                                         "volatile", "while"));
 
     /**
-     * A class representing
+     * A class representing a symbol in the symbol table.
      */
     class Symbol {
+        /** The name of the symbol. */
         String name;
+        /** The value associated with the symbol. */
         Integer value;
+        /** The left child in the binary search tree. */
         Symbol left;
+        /** The right child in the binary search tree. */
         Symbol right;
 
+        /**
+         * Constructs a new Symbol.
+         *
+         * @param k The name of the symbol.
+         * @param v The value of the symbol.
+         */
         Symbol(String k, Integer v){
             this.name = k;
             this.value = v;
         }
 
+        /**
+         * Returns a string representation of the symbol.
+         *
+         * @return A string in the format "[name, value]".
+         */
         public String toString(){
             return String.format("[%s, %d]", name, value);
         }
@@ -39,11 +54,19 @@ public class SymbolTable {
     private Symbol root;
     private int size;
 
+    /**
+     * Constructs a new empty SymbolTable.
+     */
     public SymbolTable(){
         root = null;
         size = 0;
     }
 
+    /**
+     * Returns the size of the symbol table.
+     *
+     * @return The number of symbols in the table.
+     */
     public int getSize(){
         return size;
     }
@@ -182,6 +205,11 @@ public class SymbolTable {
     	}
     }
 
+    /**
+     * Returns a list of symbols in the table, sorted by name (in-order traversal).
+     *
+     * @return A List of Symbol objects.
+     */
     public List<Symbol> inorder() {
         return inorderRecursive(root, new ArrayList<Symbol>());
     }
@@ -216,7 +244,11 @@ public class SymbolTable {
     }
 
 
-
+    /**
+     * Main method for testing the SymbolTable.
+     *
+     * @param args Command line arguments.
+     */
     public static void main(String[] args) {
         SymbolTable st = new SymbolTable();
         st.put("e", 18);

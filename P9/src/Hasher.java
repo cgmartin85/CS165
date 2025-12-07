@@ -4,12 +4,24 @@
 // Class:  CS165
 // Email:  ?????
 
+/**
+ * Functional interface for defining hash functions.
+ */
 @FunctionalInterface
 interface HashFunction {
+    /**
+     * Computes the hash code for a given key.
+     *
+     * @param key The string to hash.
+     * @return The integer hash code.
+     */
     int hash(String key);
 }
 
 
+/**
+ * Class containing various hash function implementations.
+ */
 public class Hasher {
 
     // Hashing algorithms, see specification
@@ -53,7 +65,16 @@ public class Hasher {
         return null;
     }
     
+    /**
+     * Inner class implementing the Sum hash function.
+     */
     public static class sumHash implements HashFunction {
+	/**
+         * Computes the sum of the numeric values of the characters in the key.
+         *
+         * @param key The string to hash.
+         * @return The sum of the character values.
+         */
     	@Override
     	public int hash(String key) {
     		int sum = 0;
@@ -66,6 +87,9 @@ public class Hasher {
 
 
     // Usage message
+    /**
+     * Prints the usage message and exits.
+     */
     private static void usage() {
         System.err.println("Usage: java Hasher <FIRST|SUM|PRIME|JAVA> <word>");
         System.exit(1);
@@ -74,6 +98,11 @@ public class Hasher {
 
 
     // Test code for hasher
+    /**
+     * Main method to test the hasher.
+     *
+     * @param args Command line arguments. Expects a hash function name and a word.
+     */
     public static void main(String[] args) {
         args = Debug.init(args);
         if (args.length != 2)
