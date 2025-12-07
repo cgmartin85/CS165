@@ -6,6 +6,10 @@ import java.util.Scanner;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+/**
+ * Test code for the Hashing assignment.
+ * Extends Shell to provide a command-line interface for testing HashTable operations.
+ */
 public class TestCode extends Shell {
 
     private static final int INSERT = 0;
@@ -125,6 +129,14 @@ public class TestCode extends Shell {
         }
     }
 
+    /**
+     * Processes a single command.
+     *
+     * @param cmd The command to process.
+     * @param params The parameters for the command.
+     * @throws FileNotFoundException If a file specified in the command is not found.
+     * @throws NoSuchElementException If a required parameter is missing.
+     */
     public void processOneCommand(String cmd, String params) throws FileNotFoundException, NoSuchElementException {
         String key;
         Scanner paramScanner = new Scanner(params);
@@ -205,6 +217,11 @@ public class TestCode extends Shell {
 
     }
 
+    /**
+     * Main method to start the test shell.
+     *
+     * @param args Command line arguments.
+     */
     public static void main(String[] args) {
         TestCode p9 = new TestCode();
         p9.ooMain(args);

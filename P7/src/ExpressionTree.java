@@ -7,61 +7,77 @@ import java.util.*;
  * Class:  CS165
  * Email:  cgmar@cs.colostate.edu
  *
- * @param <E> the type of elements in this list
  */
 public class ExpressionTree extends ATree {
-    
+
+    /**
+     * Parses the expression string into a queue of tokens.
+     *
+     * @param expression The expression string to parse.
+     * @return A Queue of strings representing the tokens in the expression.
+     */
     public Queue<String> parse(String expression) {
         Queue<String> infix = new LinkedList<>();
         StringTokenizer tokenizer = new StringTokenizer(expression, "(*/%+-)", true);
         String token = null;
         while (tokenizer.hasMoreTokens()) {
-        	token = tokenizer.nextToken().trim();
-        	if (!token.isEmpty()) {
-        		infix.add(token);
-        	}
+		token = tokenizer.nextToken().trim();
+		if (!token.isEmpty()) {
+			infix.add(token);
+		}
         }
         return infix;
     }
-    
+
+    /**
+     * Converts an infix expression to a postfix expression.
+     *
+     * @param infix A Queue of strings representing the infix expression.
+     * @return A List of strings representing the postfix expression.
+     */
     public List<String> convert(Queue<String> infix) {
         List<String> postfix = new ArrayList<>();
         Deque<String> operators = new ArrayDeque<>(); // used as a stack
-       
-        	while(!infix.isEmpty()) {
-        		String token = infix.poll();
-        		if(ATree.isInteger(token)) {
-        			postfix.add(token);
-        		}
-        		else if (ATree.isOperator(token)) {
-        			while (!operators.isEmpty() && !operators.peek().equals("(") && ATree.precedence(token) >= ATree.precedence(operators.peek())) {
-        				postfix.add(operators.pop());
-        			}
-        			operators.push(token);
-        		}
-        		else if (token.equals("(")) {
-        			operators.push(token);
-        		}
-        		else if (token.equals(")")) {
-        			while (!operators.peek().equals("(")) {
-        				postfix.add(operators.pop());
-        			}
-        			operators.pop();
-        		}
-        	}
-        	while (!operators.isEmpty()) {
-        		postfix.add(operators.pop());
-        	}
-        	return postfix;
+
+		while(!infix.isEmpty()) {
+			String token = infix.poll();
+			if(ATree.isInteger(token)) {
+				postfix.add(token);
+			}
+			else if (ATree.isOperator(token)) {
+				while (!operators.isEmpty() && !operators.peek().equals("(") && ATree.precedence(token) >= ATree.precedence(operators.peek())) {
+					postfix.add(operators.pop());
+				}
+				operators.push(token);
+			}
+			else if (token.equals("(")) {
+				operators.push(token);
+			}
+			else if (token.equals(")")) {
+				while (!operators.peek().equals("(")) {
+					postfix.add(operators.pop());
+				}
+				operators.pop();
+			}
+		}
+		while (!operators.isEmpty()) {
+			postfix.add(operators.pop());
+		}
+		return postfix;
     }
-    
+
+    /**
+     * Builds the expression tree from the postfix expression.
+     *
+     * @param postfix A List of strings representing the postfix expression.
+     */
     @Override
     public void build(List<String> postfix) {
         Collections.reverse(postfix);
         for (String token : postfix)
             buildRecursive(root, token);
     }
-    
+
     /**
      * Builds an expression tree from the postfix representation returned from the convert method.
      * To build the correct tree, pull tokens from {@code List<String> postfix}, and places
@@ -90,33 +106,38 @@ public class ExpressionTree extends ATree {
      * @return {@code true}, if successful
      */
     public boolean buildRecursive(Node current, String token) {
-    	if (root == null) {
-    		root = new Node(token);
-    		return true;
-    	}
-    	
-    	if (current.right == null) {
-    		current.right = new Node(token);
-    		return true;
-    	}
-    	if (ATree.isOperator(current.right.token)) {
-    		if(buildRecursive(current.right, token)) {
-    			return true;
-    		}
-    	}
-    	
-    	if (current.left == null) {
-    		current.left = new Node(token);
-    		return true;
-    	}
-    	if (ATree.isOperator(current.left.token)) {
-    		if (buildRecursive(current.left, token)) {
-    			return true;
-    		}
-    	}
-    	return false;
+	if (root == null) {
+		root = new Node(token);
+		return true;
+	}
+
+	if (current.right == null) {
+		current.right = new Node(token);
+		return true;
+	}
+	if (ATree.isOperator(current.right.token)) {
+		if(buildRecursive(current.right, token)) {
+			return true;
+		}
+	}
+
+	if (current.left == null) {
+		current.left = new Node(token);
+		return true;
+	}
+	if (ATree.isOperator(current.left.token)) {
+		if (buildRecursive(current.left, token)) {
+			return true;
+		}
+	}
+	return false;
     }
 
+    /**
+     * Returns the prefix representation of the expression tree.
+     *
+     * @return A String representing the prefix expression.
+     */
     @Override
     public String prefix() {
         return prefixRecursive(root);
@@ -134,19 +155,24 @@ public class ExpressionTree extends ATree {
      * @return the tokens in prefix order
      */
     public String prefixRecursive(Node current) {
-    	if (ATree.isOperator(current.token)) {
-    		return current.token + " " + prefixRecursive(current.left) + " " + prefixRecursive(current.right);
-    	}
-    	else {
-    		return current.token;
-    	}
+	if (ATree.isOperator(current.token)) {
+		return current.token + " " + prefixRecursive(current.left) + " " + prefixRecursive(current.right);
+	}
+	else {
+		return current.token;
+	}
     }
-    
+
+    /**
+     * Returns the infix representation of the expression tree.
+     *
+     * @return A String representing the infix expression.
+     */
     @Override
     public String infix() {
         return infixRecursive(root);
     }
-    
+
     /**
      * Concatenates the tokens in the expression tree returned from the
      * {@link #build(List)} method in <b>infix</b> order.
@@ -161,23 +187,28 @@ public class ExpressionTree extends ATree {
      * Do not add any space to the expression string.
      * <p>
      * Our implementation of this method is ~2 lines of code.
-     * @param current
+     * @param current The current node being traversed.
      * @return the tokens in infix order
      */
     public String infixRecursive(Node current) {
         if (ATree.isOperator(current.token)) {
-        	return "(" + infixRecursive(current.left) + current.token + infixRecursive(current.right) + ")";
+		return "(" + infixRecursive(current.left) + current.token + infixRecursive(current.right) + ")";
         }
         else {
-        	return current.token;
+		return current.token;
         }
     }
-    
+
+    /**
+     * Returns the postfix representation of the expression tree.
+     *
+     * @return A String representing the postfix expression.
+     */
     @Override
     public String postfix() {
         return postfixRecursive(root);
     }
-    
+
     /**
      * Concatenates the tokens in the expression tree returned from the
      * {@link #build(List)} method in <b>postfix</b> order.
@@ -185,22 +216,27 @@ public class ExpressionTree extends ATree {
      * operator. Add an extra space after each token.
      * <p>
      * Our implementation of this method is ~2 lines of code.
-     * @param current
-     * @return
+     * @param current The current node being traversed.
+     * @return The tokens in postfix order.
      */
     public String postfixRecursive(Node current) {
-    	if (ATree.isOperator(current.token)) {
-    		return postfixRecursive(current.left) + " " + postfixRecursive(current.right) + " " + current.token;
-    	}
-    	else {
-    		return current.token;
-    	}
+	if (ATree.isOperator(current.token)) {
+		return postfixRecursive(current.left) + " " + postfixRecursive(current.right) + " " + current.token;
+	}
+	else {
+		return current.token;
+	}
     }
-    
+
+    /**
+     * Evaluates the expression tree.
+     *
+     * @return The integer result of the expression.
+     */
     public int evaluate() {
         return evaluateRecursive(root);
     }
-    
+
     /**
      * Traverses the expression tree and produces the correct answer, which should be an integer.
      * To evaluate, call the recursive version of the method to get the result from the left
@@ -208,24 +244,24 @@ public class ExpressionTree extends ATree {
      * operator. A case statement based on the operator is needed to perform the arithmetic.
      * <p>
      * Our implementation uses one helper method (~7 lines of code) and is, itself, ~2 lines of code.
-     * @param current
-     * @return
+     * @param current The current node being evaluated.
+     * @return The result of the evaluation.
      */
     public int evaluateRecursive(Node current) {
-    	switch (current.token) {
-    	case "*":
-    		return (evaluateRecursive(current.left) * evaluateRecursive(current.right));
-    	case "/":
-    		return (evaluateRecursive(current.left) / evaluateRecursive(current.right));
-    	case "%":
-    		return (evaluateRecursive(current.left) % evaluateRecursive(current.right));
-    	case "+":
-    		return (evaluateRecursive(current.left) + evaluateRecursive(current.right));
-    	case "-":
-    		return (evaluateRecursive(current.left) - evaluateRecursive(current.right));
-    	default:
-    		return ATree.valueOf(current.token);
-    	}
+	switch (current.token) {
+	case "*":
+		return (evaluateRecursive(current.left) * evaluateRecursive(current.right));
+	case "/":
+		return (evaluateRecursive(current.left) / evaluateRecursive(current.right));
+	case "%":
+		return (evaluateRecursive(current.left) % evaluateRecursive(current.right));
+	case "+":
+		return (evaluateRecursive(current.left) + evaluateRecursive(current.right));
+	case "-":
+		return (evaluateRecursive(current.left) - evaluateRecursive(current.right));
+	default:
+		return ATree.valueOf(current.token);
+	}
     }
 
 }

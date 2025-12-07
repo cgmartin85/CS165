@@ -10,9 +10,18 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
 
+/**
+ * Implementation of the GraphAbstract class.
+ * Provides methods for reading/writing graphs, and performing traversals and shortest path calculations.
+ */
 public class GraphImplementation extends GraphAbstract {
 
     // Main entry point
+    /**
+     * Main method to execute the graph operations.
+     *
+     * @param args Command line arguments. Expects input distance file and output graph file.
+     */
     public static void main(String[] args) {
 
         if (args.length != 2) {
@@ -58,6 +67,12 @@ public class GraphImplementation extends GraphAbstract {
     }
 
     // Reads mileage chart from CSV file
+    /**
+     * Reads a graph from a CSV file containing city names and mileages.
+     * Populates the cities and mileages lists.
+     *
+     * @param filename The path to the CSV file.
+     */
     public void readGraph(String filename) {
     	ArrayList<String> data = readFile(filename);
     	
@@ -84,6 +99,11 @@ public class GraphImplementation extends GraphAbstract {
 
     }
 
+    /**
+     * Writes the graph to a file in DOT format.
+     *
+     * @param filename The path to the output file.
+     */
     public void writeGraph(String filename) {
 
         ArrayList<String> output = new ArrayList<>();
@@ -145,12 +165,24 @@ public class GraphImplementation extends GraphAbstract {
     	return index;
     }
 
+    /**
+     * Performs a depth-first search traversal of the graph starting from the specified city.
+     * Prints the names of visited cities to the console.
+     *
+     * @param startCity The name of the city to start the traversal from.
+     */
     public void depthFirst(String startCity) {
     	int index = getIndex(startCity);
         depthFirst(index, new ArrayList<Integer>(cities.size()));
     }
 
     // Recursive helper method
+    /**
+     * Recursive helper method for depth-first search.
+     *
+     * @param index The index of the current city.
+     * @param visited List of visited city indices.
+     */
     public void depthFirst(int index, ArrayList<Integer> visited) {
     	visited.add(index);
     	System.out.println("Visited " + cities.get(index).name);
@@ -168,6 +200,12 @@ public class GraphImplementation extends GraphAbstract {
         }
     }
 
+    /**
+     * Performs a breadth-first search traversal of the graph starting from the specified city.
+     * Prints the names of visited cities to the console.
+     *
+     * @param startCity The name of the city to start the traversal from.
+     */
     public void breadthFirst(String startCity) {
         ArrayDeque<Integer> queue = new ArrayDeque<Integer>();
         ArrayList<Integer> visited = new ArrayList<Integer>(cities.size());
@@ -195,6 +233,12 @@ public class GraphImplementation extends GraphAbstract {
     }
 
 
+    /**
+     * Calculates and prints the shortest path distance between two cities using Dijkstra's algorithm.
+     *
+     * @param fromCity The name of the starting city.
+     * @param toCity The name of the destination city.
+     */
     public void shortestPath(String fromCity, String toCity) {
     	int from = getIndex(fromCity);
     	int to = getIndex(toCity);

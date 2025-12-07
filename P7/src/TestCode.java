@@ -10,9 +10,22 @@ import java.io.PrintWriter;
 import java.nio.charset.MalformedInputException;
 import java.util.*;
 
+/**
+ * TestCode.java - test code for expression tree assignment.
+ *
+ * @author Chris Wilcox
+ * Date:   3/19/2017
+ * Class:  CS165
+ * Email:  wilcox@cs.colostate.edu
+ */
 public class TestCode {
 
-    // Test code for 
+    /**
+     * Main method to test the ExpressionTree implementation.
+     *
+     * @param args Command line arguments. args[0] should be the expression to test.
+     * @throws MalformedInputException if the input expression is invalid.
+     */
     public static void main(String[] args) throws MalformedInputException{
 
         // Instantiate student code
@@ -51,7 +64,12 @@ public class TestCode {
         writeFile(String.format("resources/Graph%s.dot", graph.hashCode()%100), graph);
     }
 
-    // Utility method to write contents of ArrayList to file
+    /**
+     * Utility method to write contents of ArrayList to file.
+     *
+     * @param filename The name of the file to write to.
+     * @param contents The contents to write to the file.
+     */
     public static void writeFile(String filename, ArrayList<String> contents) {
         try {
             PrintWriter writer = new PrintWriter(new File(filename));

@@ -75,6 +75,7 @@ public class Shell {
      * Get the shells random number generator. If one has not yet been created,
      * create one. To get repeatable results, use the {@code random}
      * command with a seed.
+     * @return the Random object
      */
 
     public static Random getRandom() {
@@ -223,6 +224,8 @@ public class Shell {
      *            - the command to process
      * @param params
      *            - a string containing the parameter(s) (if any)
+     * @throws FileNotFoundException if a file specified in a command is not found
+     * @throws NoSuchElementException if a required parameter is missing
      */
     public void processOneCommand(String cmd, String params) throws FileNotFoundException, NoSuchElementException {
         Scanner paramScanner = new Scanner(params);

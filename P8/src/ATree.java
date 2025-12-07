@@ -23,32 +23,32 @@ import java.util.Queue;
 public abstract class ATree {
 
     /**
-     *
+     * The root node of the expression tree.
      */
     public Node root;
 
     /**
-     *
+     * Inner class representing a node in the expression tree.
      */
     public class Node {
 
         /**
-         *
+         * The value stored in the node, which can be an operator or an operand.
          */
         public String token;
         /**
-         *
+         * The left child of the node.
          */
         public Node left;
         /**
-         *
+         * The right child of the node.
          */
         public Node right;
 
 
         /**
-         *
-         * @param value
+         * Constructs a new Node with the given value.
+         * @param value The value to be stored in the node (operator or operand).
          */
         public Node(String value) {
             this.token = value;
@@ -135,10 +135,10 @@ public abstract class ATree {
     }
 
     /**
-     *
-     * @param current
-     * @param graph
-     * @param name
+     * Recursively generates the graph representation of the tree.
+     * @param current The current node being processed.
+     * @param graph The ArrayList accumulating the graph description lines.
+     * @param name The unique identifier for the current node in the graph.
      */
     public void displayRecursive(Node current, ArrayList<String> graph, String name) {
         if ((current.left) != null)
@@ -166,6 +166,7 @@ public abstract class ATree {
     //
 
     /**
+     * Checks if the given token is an operator.
      * @param token a token
      * @return true if token is an operator.
      */
@@ -183,6 +184,7 @@ public abstract class ATree {
     }
 
     /**
+     * Checks if the given token is an integer.
      * @param token a token
      * @return true if the token is an int.
      */

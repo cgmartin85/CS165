@@ -6,15 +6,21 @@
 
 import java.util.*;
 
+/**
+ * Implementation of a Hash Table using chaining for collision resolution.
+ */
 public class HashTable implements IHash {
     // Method of hashing
+    /** The hash function used by this table. */
     HashFunction hasher;
     // Hash table : an ArrayList of "buckets", which store the actual strings
+    /** The underlying data structure for the hash table, an ArrayList of Lists. */
     ArrayList<List<String>> hashTable;
     /**
      * Number of Elements
      */
     int numberOfElements;
+    /** The size of the hash table (number of buckets). */
     int size;
 
     /**
@@ -37,6 +43,12 @@ public class HashTable implements IHash {
         }
     }
 
+    /**
+     * Inserts a key into the hash table.
+     *
+     * @param key The key to insert.
+     * @return true if the key was inserted, false if it already exists.
+     */
     public boolean insert(String key) {
         int hash = hasher.hash(key) % size();
         if (!hashTable.get(hash).contains(key)) {
@@ -47,54 +59,125 @@ public class HashTable implements IHash {
         return false;
     }
 
+    /**
+     * Removes a key from the hash table.
+     *
+     * @param key The key to remove.
+     * @return true if the key was removed, false if it was not found.
+     */
     public boolean remove(String key) {
-        // YOUR CODE HERE
+        int hash = hasher.hash(key) % size();
+        if (hashTable.get(hash).contains(key)) {
+            hashTable.get(hash).remove(key);
+            numberOfElements--;
+            return true;
+        }
         return false;
     }
 
+    /**
+     * Searches for a key in the hash table.
+     *
+     * @param key The key to search for.
+     * @return The key if found, null otherwise.
+     */
     public String search(String key) {
-        // YOUR CODE HERE
+        int hash = hasher.hash(key) % size();
+        if (hashTable.get(hash).contains(key)) {
+            return key;
+        }
         return null;
     }
 
+    /**
+     * Returns the size of the hash table (number of buckets).
+     *
+     * @return The number of buckets in the hash table.
+     */
     public int size() {
         return size;
     }
 
+    /**
+     * Returns the number of elements in a specific bucket.
+     *
+     * @param index The index of the bucket.
+     * @return The number of elements in the bucket at the given index.
+     */
     public int size(int index) {
-        // YOUR CODE HERE
-    	
+	if (index >= 0 && index < size) {
+            return hashTable.get(index).size();
+        }
         return 0;
     }
 
     // Return iterator for the entire hashTable,
     // must iterate all hashBuckets that are not empty
+    /**
+     * Iterator for the HashTable. Iterates over all elements in the table.
+     */
     public class HashIterator implements Iterator<String> {
         // The current index into the hashTable 
         private int currentIndex;
         // The current iterator for that hashBucket
         private Iterator<String> currentIterator = null;
 
+        /**
+         * Constructs a new HashIterator.
+         */
         HashIterator() {
-            // YOUR CODE HERE
+            currentIndex = 0;
+            while (currentIndex < size && hashTable.get(currentIndex).isEmpty()) {
+                currentIndex++;
+            }
+            if (currentIndex < size) {
+                currentIterator = hashTable.get(currentIndex).iterator();
+            }
         }
 
 
+        /**
+         * Returns the next element in the iteration.
+         *
+         * @return The next element.
+         */
         public String next() {
-            // YOUR CODE HERE
-            return null;
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+            String next = currentIterator.next();
+            if (!currentIterator.hasNext()) {
+                currentIndex++;
+                while (currentIndex < size && hashTable.get(currentIndex).isEmpty()) {
+                    currentIndex++;
+                }
+                if (currentIndex < size) {
+                    currentIterator = hashTable.get(currentIndex).iterator();
+                } else {
+                    currentIterator = null;
+                }
+            }
+            return next;
         }
 
+        /**
+         * Checks if there are more elements in the iteration.
+         *
+         * @return true if there are more elements, false otherwise.
+         */
         public boolean hasNext() {
-            // YOUR CODE HERE
-            return false;
+            return currentIterator != null && currentIterator.hasNext();
         }
     }
 
     // Return an iterator for the hash table
+    /**
+     * Returns an iterator over the elements in the hash table.
+     *
+     * @return An Iterator over the strings in the hash table.
+     */
     public Iterator<String> iterator() {
-        // YOUR CODE HERE
-        return null;
+        return new HashIterator();
     }
 
     /**
@@ -110,6 +193,9 @@ public class HashTable implements IHash {
 
     // Prints entire hash table.
     // NOTE: This method is used extensively for testing.
+    /**
+     * Prints the contents of the hash table to the debug output.
+     */
     public void print() {
         Debug.printf("HashTable size: " + size());
 

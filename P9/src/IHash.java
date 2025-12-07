@@ -6,6 +6,9 @@
 
 import java.util.Iterator;
 
+/**
+ * Interface defining the operations for a hash table.
+ */
 public interface IHash {
 
     /** Add a key to the hash table, if it is not currently in the table

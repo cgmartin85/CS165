@@ -198,6 +198,7 @@ public class Debug  {
 
   /** Send debugging output to a file.
    * @param fileName name of the file to send output to
+   * @throws FileNotFoundException if the file cannot be created or opened.
    */
 
   public static void toFile (String fileName) throws FileNotFoundException {
